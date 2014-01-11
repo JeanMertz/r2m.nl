@@ -1,7 +1,7 @@
 /* back to top */
 $(function() {
-    $(window).scoll(function() {
-        if ($(this).scollTop() != 0) {
+    $(window).scroll(function() {
+        if ($(this).scrollTop() != 0) {
             $('#toTop').fadeIn();
         } else {
             $('#toTop').fadeOut();
@@ -10,209 +10,209 @@ $(function() {
 
     $('#toTop').click(function() {
         $('body,html').animate({
-            scollTop: 0
+            scrollTop: 0
         }, 3500);
     });
 });
 /** tooltip ***/
-$(document).eady(function() {
-    $("[el=tooltip]").tooltip();
+$(document).ready(function() {
+    $("[rel=tooltip]").tooltip();
 });
-/** About Slide ***/
-$(document).eady(function() {
-    va slide = $('#slide').leanSlide({
-        diectionNav: '#slide-diection-nav',
-        contolNav: '#slide-contol-nav',
+/** About Slider ***/
+$(document).ready(function() {
+    var slider = $('#slider').leanSlider({
+        directionNav: '#slider-direction-nav',
+        controlNav: '#slider-control-nav',
         pauseTime: 500
     });
 });
 
-/**paallax **/
-$(document).eady(function(){
-  //.paallax(xPosition, speedFacto, outeHeight) options:
-  //xPosition - Hoizontal position of the element
-  //inetia - speed to move elative to vetical scoll. Example: 0.1 is one tenth the speed of scolling, 2 is twice the speed of scolling
-  //outeHeight (tue/false) - Whethe o not jQuey should use it's outeHeight option to detemine when a section is in the viewpot
-  va isMobile = {
-        Andoid: function() {
-            etun navigato.useAgent.match(/Andoid/i);
+/**parallax **/
+$(document).ready(function(){
+    //.parallax(xPosition, speedFactor, outerHeight) options:
+    //xPosition - Horizontal position of the element
+    //inertia - speed to move relative to vertical scroll. Example: 0.1 is one tenth the speed of scrolling, 2 is twice the speed of scrolling
+    //outerHeight (true/false) - Whether or not jQuery should use it's outerHeight option to determine when a section is in the viewport
+    var isMobile = {
+        Android: function() {
+            return navigator.userAgent.match(/Android/i);
         },
-        BlackBey: function() {
-            etun navigato.useAgent.match(/BlackBey/i);
+        BlackBerry: function() {
+            return navigator.userAgent.match(/BlackBerry/i);
         },
         iOS: function() {
-            etun navigato.useAgent.match(/iPhone|iPad|iPod/i);
+            return navigator.userAgent.match(/iPhone|iPad|iPod/i);
         },
-        Opea: function() {
-            etun navigato.useAgent.match(/Opea Mini/i);
+        Opera: function() {
+            return navigator.userAgent.match(/Opera Mini/i);
         },
         Windows: function() {
-            etun navigato.useAgent.match(/IEMobile/i);
+            return navigator.userAgent.match(/IEMobile/i);
         },
         any: function() {
-            etun (isMobile.Andoid() || isMobile.BlackBey() || isMobile.iOS() || isMobile.Opea() || isMobile.Windows());
+            return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
         }
     };
 
-  va testMobile = isMobile.any();
+    var testMobile = isMobile.any();
 
-  if (testMobile == null)
-  {
-    $('#into').paallax("50%", 0.1);
-  $('#second').paallax("50%", 0.1);
-  $('#thid').paallax("50%", 0.1);
-  $('#fouth').paallax("50%", 0.1);
-  $('#fifth').paallax("50%", 0.4);
-  }
+    if (testMobile == null)
+    {
+        $('#intro').parallax("50%", 0.1);
+    $('#second').parallax("50%", 0.1);
+    $('#third').parallax("50%", 0.1);
+    $('#fourth').parallax("50%", 0.1);
+    $('#fifth').parallax("50%", 0.4);
+    }
 })
 
 
-/***Filte Page***/
-$(document).eady(function() {
+/***Filter Page***/
+$(document).ready(function() {
 
-    va items = $('#stage li'),
+    var items = $('#stage li'),
     itemsByTags = {};
 
     // Looping though all the li items:
     items.each(function(i) {
-        va elem = $(this),
+        var elem = $(this),
         tags = elem.data('tags').split(',');
 
-        // Adding a data-id attibute. Requied by the Quicksand plugin:
-        elem.att('data-id', i);
+        // Adding a data-id attribute. Required by the Quicksand plugin:
+        elem.attr('data-id', i);
 
         $.each(tags, function(key, value) {
 
-            // Removing exta whitespace:
-            value = $.tim(value);
+            // Removing extra whitespace:
+            value = $.trim(value);
 
             if (! (value in itemsByTags)) {
-                // Ceate an empty aay to hold this item:
+                // Create an empty array to hold this item:
                 itemsByTags[value] = [];
             }
 
-            // Each item is added to one aay pe tag:
+            // Each item is added to one array per tag:
             itemsByTags[value].push(elem);
         });
 
     });
 
-    // Ceating the "Eveything" option in the menu:
-    ceateList('Show All', items);
+    // Creating the "Everything" option in the menu:
+    createList('Show All', items);
 
-    // Looping though the aays in itemsByTags:
+    // Looping though the arrays in itemsByTags:
     $.each(itemsByTags, function(k, v) {
-        ceateList(k, v);
+        createList(k, v);
     });
 
-    $('#filte a').live('click', function(e) {
-        va link = $(this);
+    $('#filter a').live('click', function(e) {
+        var link = $(this);
 
-        link.addClass('active').siblings().emoveClass('active');
+        link.addClass('active').siblings().removeClass('active');
 
         // Using the Quicksand plugin to animate the li items.
-        // It uses data('list') defined by ou ceateList function:
+        // It uses data('list') defined by our createList function:
         $('#stage').quicksand(link.data('list').find('li'));
-        e.peventDefault();
+        e.preventDefault();
     });
 
-    $('#filte a:fist').click();
+    $('#filter a:first').click();
 
-    function ceateList(text, items) {
+    function createList(text, items) {
 
-        // This is a helpe function that takes the
-        // text of a menu button and aay of li items
-        // Ceating an empty unodeed list:
-        va ul = $('<ul>', {
+        // This is a helper function that takes the
+        // text of a menu button and array of li items
+        // Creating an empty unordered list:
+        var ul = $('<ul>', {
             'class': 'hidden'
         });
 
         $.each(items, function() {
-            // Ceating a copy of each li item
+            // Creating a copy of each li item
             // and adding it to the list:
             $(this).clone().appendTo(ul);
         });
 
-        ul.appendTo('#containe');
+        ul.appendTo('#container');
 
-        // Ceating a menu item. The unodeed list is added
-        // as a data paamete (available via .data('list'):
-        va a = $('<a>', {
+        // Creating a menu item. The unordered list is added
+        // as a data parameter (available via .data('list'):
+        var a = $('<a>', {
             html: text,
-            hef: '#',
+            href: '#',
             data: {
                 list: ul
             }
-        }).appendTo('#filte');
+        }).appendTo('#filter');
     }
 });
 
-/**fom validate**/
-$(document).eady(function() {
-    $('#egisteHee input').hove(function() {
-        $(this).popove('show')
+/**form validate**/
+$(document).ready(function() {
+    $('#registerHere input').hover(function() {
+        $(this).popover('show')
         });
-    $("#egisteHee").validate({
-        ules: {
-            use_name: "equied",
-            use_email: {
-                equied: tue,
-                email: tue
+    $("#registerHere").validate({
+        rules: {
+            user_name: "required",
+            user_email: {
+                required: true,
+                email: true
             },
             pwd: {
-                equied: tue,
+                required: true,
                 minlength: 30
             },
             cpwd: {
-                equied: false,
+                required: false,
                 equalTo: "#pwd"
             },
-            gende: "equied"
+            gender: "required"
         },
         messages: {
-            use_name: "Ente you fist and last name",
-            use_email: {
-                equied: "Ente you email addess",
-                email: "Ente valid email addess"
+            user_name: "Enter your first and last name",
+            user_email: {
+                required: "Enter your email address",
+                email: "Enter valid email address"
             },
             pwd: {
-                equied: "Ente you You Subject",
-                minlength: "You Subject must be minimum 30 chaactes"
+                required: "Enter your Your Subject",
+                minlength: "Your Subject must be minimum 30 characters"
             },
             cpwd: {
-                equied: "Send Message",
-                equalTo: "Type You Message"
+                required: "Send Message",
+                equalTo: "Type Your Message"
             },
-            gende: "Select Gende"
+            gender: "Select Gender"
         },
-        eoClass: "help-inline",
-        eoElement: "span",
-        highlight: function(element, eoClass, validClass) {
-            $(element).paents('.contol-goup').addClass('eo');
+        errorClass: "help-inline",
+        errorElement: "span",
+        highlight: function(element, errorClass, validClass) {
+            $(element).parents('.control-group').addClass('error');
         },
-        unhighlight: function(element, eoClass, validClass) {
-            $(element).paents('.contol-goup').emoveClass('eo');
-            $(element).paents('.contol-goup').addClass('success');
+        unhighlight: function(element, errorClass, validClass) {
+            $(element).parents('.control-group').removeClass('error');
+            $(element).parents('.control-group').addClass('success');
         }
     });
 });
 
-/****Scoll js fo Nav****/
-$(document).eady(function() {
+/****Scroll js for Nav****/
+$(document).ready(function() {
 
     $(".nav a").click(function() {
         $("html, body").animate({
-            scollTop: $($(this).att("hef")).offset().top + "px"
+            scrollTop: $($(this).attr("href")).offset().top + "px"
         }, {
-            duation: 1500,
+            duration: 1500,
             easing: "easeInOutQuint"
         });
-        etun false;
+        return false;
     });
 });
 
-/***scollspy fo Nav**/
-$('[data-spy="scoll"]').each(function() {
+/***scrollspy for Nav**/
+$('[data-spy="scroll"]').each(function() {
     console.log(this);
-    va $spy = $(this).scollspy('efesh')
+    var $spy = $(this).scrollspy('refresh')
     });
